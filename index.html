@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!--
+		designer: Adios
+		mail: adiosf6f@gmail.com
+
+		font: mikachan from http://mikachan-fonts.com
+		stream: A&G+ source
+	-->
+	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" >
+	<link rel="icon" type="image/x-icon" href="favicon.ico" />
+	<title>超！A&G+ - a moderner look (3rd party)</title>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js"></script>
+	<script type="text/javascript" src="http://releases.flowplayer.org/js/flowplayer-3.2.11.min.js"></script>
+	<script type="text/javascript" src="widget.js"></script>
+	<script type="text/javascript">
+	var	Program_name = '',
+		Program_text = '',
+		Program_personality = '';
+
+	WebFont.load({
+		custom: {
+			families: ['mikachan'],
+			urls: ['http://adios.tw/fonts/css/mikachan' ]
+		}
+	});
+
+	(function getProgramInfo() {
+		$.getScript('http://www.uniqueradio.jp/aandg');
+		setTimeout(getProgramInfo, 60000);
+	})()
+
+	function twitterBackground() {
+		new TWTR.Widget({
+			version: 2,
+			type: 'search',
+			search: '#agqr',
+			interval: 10000,
+			theme: {
+				shell: {
+					background: 'transparent',
+					color: '#ffffff'
+				},
+				tweets: {
+					background: 'transparent',
+					color: '#333333',
+					links: '#1985b5'
+				}
+			},
+			features: {
+				fullscreen: true,
+				scrollbar: true,
+				loop: true,
+				live: true,
+				behavior: 'default'
+			}
+		}).render().start();
+	};
+
+	$(function() {
+		flowplayer('playa', 'http://releases.flowplayer.org/swf/flowplayer-3.2.12.swf', {
+			clip: {
+				url: 'aandg1',
+				live: true,
+				provider: 'ag',
+				autoPlay: false
+			},
+			plugins: {
+				ag: {
+					url: 'flowplayer.rtmp-3.2.10.swf',
+					netConnectionUrl: 'rtmp://fms-base1.mitene.ad.jp/agqr'
+				},
+				controls: {
+					url: 'http://releases.flowplayer.org/swf/flowplayer.controls-3.2.12.swf',
+					time: false,
+					scrubber: false,
+
+					backgroundColor: 'transparent',
+					backgroundGradient: 'none',
+					volumeSliderColor: 'transparent',
+					volumeBorder: '1.5px solid rgba(255, 255, 255,0.7)',
+					tooltipColor: 'rgba(255, 255, 255, 0.7)',
+					tooltipTextColor: '#000000'
+				},
+				programInfo: {
+					url: 'flowplayer.content-3.2.8.swf',
+					top: 0,
+					width: 480,
+					height: 320,
+					backgroundGradient: 'none',
+					backgroundColor: '#f0f0f0',
+					display: 'none',
+					border: 0,
+					style: {
+						'p': {
+							fontFamily: 'Meiryo, "MS PGothic", sans-serif',
+							color: '#000000',
+							leading: 10
+						},
+						'.title': {
+							fontSize: 28,
+							fontFamily: '"Hiragino Kaku Gothic Std", "Meiryo UI", "MS PGothic", sans-serif'
+						},
+						'.hoster': {
+							fontWeight: 'bold',
+							fontSize: 28
+						},
+						'.text': {
+							fontSize: 16
+						},
+						'a': {
+							textDecoration: 'underline',
+							color: '#1985b5'
+						}
+					}
+				}
+			},
+			canvas: {
+				background: 'black',
+				backgroundGradient: 'none'
+			},
+			onLoad: function() {
+				var	infoOpened = false,
+					contentPlugin = $f('playa').getPlugin('programInfo');
+
+				$('div.info-button').click(function() {
+					if (infoOpened) {
+						contentPlugin.hide();
+						infoOpened = false;
+					} else {
+						contentPlugin.setHtml(
+							'<p class="title" align="center">T</p>'.replace(/T/, decodeURIComponent(Program_name)) +
+							'<p class="hoster" align="center">H</p>'.replace(/H/, decodeURIComponent(Program_personality)) +
+							'<p class="text" align="center">T</p>'.replace(/T/, decodeURIComponent(Program_text))
+						);
+						contentPlugin.show();
+						infoOpened = true;
+					}
+				});
+			}
+		});
+
+		$('#tv').draggable({ cancel: '#tv > *' }).offset({
+			top: $(window).height() / 2 - $('#tv').outerHeight() / 2,
+			left: $(window).width() / 2 - $('#tv').outerWidth() / 2
+		});
+		(function clock() {
+			var now = new Date();
+			$('#about .clock').text(now.getHours() + ':' + (function(m) {
+				if (m < 10)
+					m = '0' + m;
+				return m;
+			})(now.getMinutes()));
+			setTimeout(clock, 60000);
+		})();
+	});
+	</script>
+	<style type="text/css">
+		* {
+			margin: 0;
+			padding: 0;
+			border: none;
+		}
+		html, body { height: 100%; }
+		body {
+			background-color: white;
+			position: relative;
+			font-family: mikachan, fantasy;
+		}
+		.wf-inactive body, .wf-loading body {
+			font-family: Georgia,
+			/* Win 7 JP */
+			'メイリオ', Meiryo,
+			/* Mac */
+			'ヒラギノ角ゴ Pro W3','Hiragino Kaku Gothic Pro',
+			/* Win XP JP */
+			'ＭＳ Ｐゴシック', 'MS PGothic',
+			'Microsoft JhengHei', '微軟正黑體', fantasy;
+		}
+		#meromero {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			opacity: 0.1;
+			filter:alpha(opacity=10);
+		}
+		#tv {
+			position: absolute;
+			top: 0;
+			left: 0;
+			z-index: 50;
+			padding: 50px;
+			background-color: black;
+
+			border-radius: 20px;
+			-webkit-border-radius: 20px;
+			-moz-border-radius: 20px;
+
+			box-shadow: 0px 0px 50px black;
+			-webkit-box-shadow: 0px 0px 50px black;
+			-moz-box-shadow: 0px 0px 50px black;
+		}
+		#tv:hover {
+			cursor: move;
+		}
+		#tv .info-button {
+			position: absolute;
+			left: 280px;
+			bottom: 15px;
+			width: 20px;
+			height: 20px;
+			background-color: #111;
+
+			box-shadow: 0px 0px 10px #555;
+			-webkit-box-shadow: 0px 0px 10px #555;
+			-moz-box-shadow: 0px 0px 10px #555;
+
+			border-radius: 3px;
+			-webkit-border-radius: 3px;
+			-moz-border-radius: 3px;
+		}
+		#tv .info-button:hover {
+			background-color: #222;
+			cursor: pointer;
+		}
+		#playa {
+			width: 480px;
+			height: 320px;
+			display: block;
+		}
+		#playa:hover {
+			cursor: pointer;
+		}
+		#about {
+			position: fixed;
+			right: 2em;
+			bottom: 1em;
+			z-index: 52;
+			opacity: 0.7;
+			filter: alpha(opacity=70);
+		}
+		#about a {
+			text-decoration: none;
+			color: #1985b5;
+			font-size: 200%;
+		}
+		#about a:hover {
+			text-decoration: underline;
+		}
+		/* twitter widget */
+		#twtr-widget-1 {
+			font-family: mikachan, fantasy !important;
+		}
+		.wf-inactive #twtr-widget-1, .wf-loading #twtr-widget-1 {
+			font-family: Georgia,
+			/* Win 7 JP */
+			'メイリオ', Meiryo,
+			/* Mac */
+			'ヒラギノ角ゴ Pro W3','Hiragino Kaku Gothic Pro',
+			/* Win XP JP */
+			'ＭＳ Ｐゴシック', 'MS PGothic',
+			'Microsoft JhengHei', '微軟正黑體', fantasy !important;
+		}
+		.twtr-widget .twtr-tweet, .twtr-results-hr {
+			border-bottom: none !important;
+		}
+		.twtr-img img {
+			border-radius: 5px;
+			-moz-border-radius: 5px;
+			-webkit-border-radius: 5px;
+		}
+	</style>
+</head>
+<body>
+	<img id="meromero" src="mero.jpg"></img>
+	<script type="text/javascript">
+		twitterBackground();
+	</script>
+
+	<div id="tv">
+		<div class="info-button"></div>
+		<a id="playa"></a>
+	</div>
+
+	<div id="about">
+		<span>⊂（ ＾ω＾）⊃</span>
+		<span class="clock"></span>
+		<a href="http://www.agqr.jp/timetable/digital-mf.php" title="番組表" target="_blank">番組表</a>
+		<a href="http://mikachan-font.com/" title="みかちゃん used" target="_blank">字</a>
+	</div>
+</body>
+</html>
